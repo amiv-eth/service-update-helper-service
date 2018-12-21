@@ -21,6 +21,21 @@ def verify_authorization(func):
   return wrapper
 
 
+@app.errorhandler(401)
+def error_not_authenticated(e):
+  return 'Authorization header missing or invalid!'
+
+
+@app.errorhandler(404)
+def error_not_found(e):
+  return 'Service not found!'
+
+
+@app.errorhandler(500)
+def error_internal(e):
+  return 'Could not update the requested service!'
+
+
 @verify_authorization
 @app.route('/service/<name>/update')
 def service_update(name):
@@ -31,5 +46,5 @@ def service_update(name):
     abort(500)
   except docker.errors.NotFound:
     abort(404)
-  except:
-    abort(500)
+  # except:
+  #   abort(500)
