@@ -6,11 +6,11 @@ WORKDIR /service
 # Service will run on port 8080
 EXPOSE 8080
 
-# Install bjoern and dependencies for install (we need to keep libev)
+# Install bjoern and dependencies for install
 RUN apk add --no-cache --virtual .deps \
         musl-dev python-dev gcc git && \
+    # Keep libev for running bjoern
     apk add --no-cache libev-dev && \
-    apk add --no-cache libffi-dev libressl-dev && \
     pip install bjoern
 
 # Copy files to /api directory, install requirements
