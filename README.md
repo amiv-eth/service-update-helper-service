@@ -37,14 +37,16 @@ pip install -r requirements.txt
 ```
 
 ### Run
+
 After that, you can run the service by executing `main.py`. The API is
 served at `127.0.0.1:5000` by default.
 
 ## Deploy
-The service is available as a [docker](https://www.docker.com) image.
+
+The service is available as a docker image [amiveth/service-update-helper-service](https://hub.docker.com/r/amiveth/service-update-helper-service). 
 
 Next, create a configuration based on `app/config.example.py` and save it (as a docker config).
 
-Finally, create the service and mount the configuration file to `/service/instance/config.py`.
+Finally, create the service and mount the configuration file to `/service/app/config.py`.
 
 *Please note that the service is available on port `8080`!*
