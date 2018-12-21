@@ -1,7 +1,6 @@
 from flask import Flask, request
 from functools import wraps
 import docker
-import auth
 
 
 app = Flask(__name__)
