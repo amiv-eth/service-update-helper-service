@@ -8,7 +8,7 @@ app.config.from_pyfile("config.py")
 client = docker.from_env()
 
 
-def verify_authorization():
+def verify_authorization(func):
   @wraps(func)
   def wrapper(*args, **kwargs):
     token = request.headers.get('Authorization', '').strip()
@@ -21,7 +21,7 @@ def verify_authorization():
   return wrapper
 
 
-@auth.verify_authorization
+@verify_authorization
 @app.route('/service/<name>/update')
 def service_update(name):
   try:
