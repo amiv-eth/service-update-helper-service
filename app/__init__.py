@@ -29,9 +29,8 @@ def service_update(name):
   if (' ' in token):  # Remove keywords, e.g. "Token (...)" or "Bearer (...)"
     token = token.split(' ')[1]
 
-  if token in app.config['TOKENS']:
-    return func(*args, **kwargs)
-  return abort(401)
+  if token not in app.config['TOKENS']:
+    return abort(401)
 
   # Try to update the requested service
   try:
