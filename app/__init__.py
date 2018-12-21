@@ -43,8 +43,11 @@ def service_update(name):
     service = client.services.get(name)
     if service.force_update():
       return "Service successfully updated."
+    print('Updating service failed', flush=True)
     abort(500)
   except docker.errors.NotFound:
     abort(404)
-  # except:
-  #   abort(500)
+  except e:
+    print('Updating service failed', flush=True)
+    print(e, flush=True)
+    abort(500)

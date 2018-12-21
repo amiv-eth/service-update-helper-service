@@ -1,7 +1,5 @@
 FROM python:3.7-alpine
 
-# Create user with home directory and no password and change workdir
-RUN adduser -Dh /service service
 WORKDIR /service
 # Service will run on port 8080
 EXPOSE 8080
@@ -19,9 +17,6 @@ RUN pip install -r /service/requirements.txt
 
 # Cleanup dependencies
 RUN apk del .deps
-
-# Switch user
-USER service
 
 # Start application
 CMD [ "python", "server.py" ]
