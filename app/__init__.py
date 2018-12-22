@@ -35,7 +35,7 @@ def service_update(name):
   # Try to update the requested service
   try:
     service = client.services.get(name)
-    raw_image = service.attrs['Spec']['TaskTemplate']['ContainerSpec']['Image'].split('@', 2)
+    raw_image = service.attrs['Spec']['TaskTemplate']['ContainerSpec']['Image'].split('@', 2)[0]
     parts_image = raw_image.split(':', 2)
     new_image = client.images.pull(parts_image[0], parts_image[1])
     print(new_image.id, flush=True)
