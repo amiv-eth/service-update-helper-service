@@ -35,10 +35,11 @@ def service_update(name):
   # Try to update the requested service
   try:
     service = client.services.get(name)
-    print(service.attrs, flush=True)
-    # client.images.pull(service.attrs[''], service.attrs[''])
-    if service.force_update():
-      return "Service successfully updated."
-    abort(500)
+    raw_image = service.attrs['Spec']['TaskTemplate']['ContainerSpec']['Image'].split('@', 2)
+    parts_image = raw_image.split(':', 2)
+    new_image = client.images.pull(parts_image[0], parts_image[1])
+    print(new_image.id, flush=True)
+    service.update(image=new_image.id)
+    return "Service successfully updated."
   except docker.errors.NotFound:
     abort(404)
