@@ -34,7 +34,7 @@ deploy:
   stage: deploy
   image: alpine:latest
   before_script:
-    apk add --no-cache curl
+    - apk add --no-cache curl
   script:
     - curl -H "Authorization: $CI_DEPLOY_TOKEN" https://cluster.amiv.ethz.ch/service/$CI_DEPLOY_SERVICE/update
   only:
