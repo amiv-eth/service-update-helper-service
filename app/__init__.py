@@ -38,8 +38,8 @@ def service_update(name):
     raw_image = service.attrs['Spec']['TaskTemplate']['ContainerSpec']['Image'].split('@', 2)[0]
     parts_image = raw_image.split(':', 2)
     new_image = client.images.pull(parts_image[0], parts_image[1])
-    print(new_image.id, flush=True)
-    service.update(image=new_image.id)
+    print(raw_image + new_image.id, flush=True)
+    service.update(image=raw_image + '@' + new_image.id)
     return "Service successfully updated."
   except docker.errors.NotFound:
     abort(404)
