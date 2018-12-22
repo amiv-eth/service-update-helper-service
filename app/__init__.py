@@ -35,6 +35,8 @@ def service_update(name):
   # Try to update the requested service
   try:
     service = client.services.get(name)
+    print(service.attrs, flush=True)
+    # client.images.pull(service.attrs[''], service.attrs[''])
     if service.force_update():
       return "Service successfully updated."
     abort(500)
