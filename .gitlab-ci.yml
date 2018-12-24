@@ -28,10 +28,8 @@ build:
 
 deploy:
   stage: deploy
-  image: alpine:latest
-  before_script:
-    - apk add --no-cache curl
+  image: amiveth/service-update-helper
   script:
-    - "curl -H \"Authorization: $CI_DEPLOY_TOKEN\" https://cluster.amiv.ethz.ch/service/$CI_DEPLOY_SERVICE/update"
+    - /update.py
   only:
     - master
