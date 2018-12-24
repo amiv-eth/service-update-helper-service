@@ -9,22 +9,22 @@ client = docker.from_env()
 
 @app.errorhandler(401)
 def error_not_authenticated(e):
-  return 'Error 401: Authorization header missing or invalid!'
+  return 'Error 401: Authorization header missing or invalid!', 401
 
 
 @app.errorhandler(403)
 def error_forbidden(e):
-  return 'Error 403: Forbidden! You are not allowed to update the service.'
+  return 'Error 403: Forbidden! You are not allowed to update the service.', 403
 
 
 @app.errorhandler(404)
 def error_not_found(e):
-  return 'Error 404: Service not found!'
+  return 'Error 404: Service not found!', 404
 
 
 @app.errorhandler(500)
 def error_internal(e):
-  return 'Error 500: Could not update the requested service!'
+  return 'Error 500: Could not update the requested service!', 500
 
 
 @app.route('/service/<name>/update')
