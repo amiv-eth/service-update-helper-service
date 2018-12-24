@@ -9,17 +9,22 @@ client = docker.from_env()
 
 @app.errorhandler(401)
 def error_not_authenticated(e):
-  return 'Authorization header missing or invalid!'
+  return 'Error 401: Authorization header missing or invalid!'
+
+
+@app.errorhandler(403)
+def error_forbidden(e):
+  return 'Error 403: Forbidden! You are not allowed to update the service.'
 
 
 @app.errorhandler(404)
 def error_not_found(e):
-  return 'Service not found!'
+  return 'Error 404: Service not found!'
 
 
 @app.errorhandler(500)
 def error_internal(e):
-  return 'Could not update the requested service!'
+  return 'Error 500: Could not update the requested service!'
 
 
 @app.route('/service/<name>/update')
@@ -37,12 +42,17 @@ def service_update(name):
     service = client.services.get(name)
     raw_image = service.attrs['Spec']['TaskTemplate']['ContainerSpec']['Image'].split('@', 2)[0]
     parts_image = raw_image.split(':', 2)
-    new_image = client.images.pull(parts_image[0], parts_image[1])
-    print(name + ': hash: ' + new_image.id, flush=True)
+    repository_prefix = parts_image[0].split('/', 2)[0]
+
+    if (repository_prefix not in app.config['ALLOWED_REPOSITORY_PREFIXES']):
+      abort(403)
+
     service.update(image=raw_image)
     service.reload()
+
     if (service.force_update()):
-      return "Service successfully updated."
+      return "Success!"
+
     abort(500)
   except docker.errors.NotFound:
     abort(404)
