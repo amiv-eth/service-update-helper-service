@@ -40,6 +40,7 @@ def service_update(name):
     new_image = client.images.pull(parts_image[0], parts_image[1])
     print(name + ': hash: ' + new_image.id, flush=True)
     service.update(image=raw_image)
+    service.reload()
     if (service.force_update()):
       return "Service successfully updated."
     abort(500)
